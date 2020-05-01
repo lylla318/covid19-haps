@@ -2,7 +2,7 @@
 
 This repository contains code and data to reproduce the analysis from our paper "Hazardous Air Pollutant Exposure as a Contributing Factor to COVID-19 Mortality in the United States."
 
-## Code:
+### Code:
 
 [`Processing.R`](https://github.com/lylla318/covid19-haps/blob/master/Processing.R)
 
@@ -12,10 +12,10 @@ This repository contains code and data to reproduce the analysis from our paper 
 
 [`Tables.R`](https://github.com/lylla318/covid19-haps/blob/master/Tables.R)
 
-## Data:
+### Data:
 
-## Additonal Sources:
+### Additonal Sources:
 
-## Contact Us:
+### Contact Us:
 
-## Terms of Use:
+### Terms of Use:

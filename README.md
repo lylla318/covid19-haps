@@ -4,10 +4,10 @@ This repository contains code and data to reproduce the analysis from our paper 
 
 ## Code:
 
-* [Processing.R](https://github.com/lylla318/covid19-haps/blob/master/Processing.R)
-* [Analysis.R](https://github.com/lylla318/covid19-haps/blob/master/Analysis.R)
-* [Figures.R](https://github.com/lylla318/covid19-haps/blob/master/Figures.R)
-* [Tables.R](https://github.com/lylla318/covid19-haps/blob/master/Tables.R)
+* [`Processing.R`](https://github.com/lylla318/covid19-haps/blob/master/Processing.R)
+* [`Analysis.R`](https://github.com/lylla318/covid19-haps/blob/master/Analysis.R)
+* [`Figures.R`](https://github.com/lylla318/covid19-haps/blob/master/Figures.R)
+* [`Tables.R`](https://github.com/lylla318/covid19-haps/blob/master/Tables.R)
 
 ## Data:
 

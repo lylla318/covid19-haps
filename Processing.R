@@ -1,4 +1,5 @@
-library(ggplot2)
+# Download and pre-process data for the analysis.
+
 library(tidyverse)
 library(lubridate)
 library(dplyr)

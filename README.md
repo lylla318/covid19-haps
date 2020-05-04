@@ -8,7 +8,7 @@ This repository contains code and data to reproduce the analysis from our paper 
 
 * [2014 NATA Respiratory Hazard Index by Source Group](https://www.epa.gov/sites/production/files/2018-08/nata2014v2_national_resphi_by_tract_srcgrp.xlsx)
 * [2014 NATA Respiratory Hazard Index by Pollutant](https://www.epa.gov/sites/production/files/2018-08/nata2014v2_national_resphi_by_tract_poll.xlsx)
-* [EPA Environmental Justice Screening and Mapping Tool](ftp://newftp.epa.gov/EJSCREEN/2019/EJSCREEN_2019_USPR.csv.zip)
+* EPA Environmental Justice Screening and Mapping Tool: ftp://newftp.epa.gov/EJSCREEN/2019/EJSCREEN_2019_USPR.csv.zip
 
 
 [`Analysis.R`](https://github.com/lylla318/covid19-haps/blob/master/Analysis.R) contains the code to implement both single and multi-pollutant mixture models. 

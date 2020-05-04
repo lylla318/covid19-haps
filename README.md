@@ -31,8 +31,12 @@ This repository contains code and data to reproduce the analysis from our paper 
 | Control Variable: Covid-19 Testing | [The COVID tracking project](https://covidtracking.com/)  | State level Covid-19 Testing data up to and including April 19, 2020  |
 | Control Variable: Monthly Min and Max Temperatures | [CDC Wonder Database](https://wonder.cdc.gov/) compiled from the NASA North America Land Data Assimilation System (NLDAS) Daily Air Temperatures and Heat Index  | County maximum and minimum temperatures per year 2011  |
 
-### Additonal Sources:
-
 ### Contact Us:
 
+* Email: mdpetron@syr.edu
+
 ### Terms of Use:
+
+* Authors/funders retain copyright (where applicable) of code on this Github repo and the article posted on TKJOURNAL (under review).
+
+

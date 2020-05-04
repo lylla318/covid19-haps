@@ -1,22 +1,14 @@
-## HAP POLLUTION COVID ANALYSIS ##
-## COLLAB SCRIPT - TELL EACH OTHER BEFORE PUSHING !!!!!! ##
-
-### Figures ####
-
 library(plotly)
 library(rjson)
 
-#start with the dataframe from the load script
-
-#lets make a bar graho of the top 7 HAPS and other by source 
+# Bar chart of the top 7 HAPS by source. 
 names(usa1)
 usa <- NataRespHazByChem[1,] %>% select(8:50) %>% gather("pollutant", "HQ14")  
 names(pol_county_covid)
 pol_county_covid <- pol_county_covid %>% mutate(AllbutDeisel = rowSums(select(.,79:94,96:121)))
 pol_county_covid <- pol_county_covid %>% mutate(Allbut_top6 = rowSums(select(.,79:83, 86:91, 93:99, 101:109,111:121)))
 
-#lets make a PIE chart 
-# make an all other catagory
+# Pie chart with "All Others" category 
 usa1 <- usa %>% mutate(rank = dense_rank(-HQ14)) %>%
   mutate(HAP = ifelse(rank > 6, "ALL OTHERS", pollutant)) %>%
   group_by(HAP) %>% summarise(HQ14 = sum(HQ14)) %>% ungroup()
@@ -25,12 +17,9 @@ hap_pie <- plot_ly(usa1, labels = ~HAP, values = ~HQ14, type = 'pie')
 hap_pie  <- hap_pie %>% layout(title = 'United States Average Respiratory Hazard Quotient Contribution<br>by Hazardous Air Pollutant 2014',
                       xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                       yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-
 hap_pie 
 
-
-
-#graph the single MRR estimates _ must load table in tables_pol first
+# Graph the single MRR estimates - must load table in Tables.R first.
 
 MRR.df.indv$Pollutant <- factor(MRR.df.indv$Pollutant, as.character(MRR.df.indv$Pollutant))
 MRR.df.indv$order <- c(1,2,3,4,5,6,7,8)
@@ -48,8 +37,7 @@ ggplot(MRR.df.indv, aes(x=MRR, y=Pollutant, group=1)) +
   geom_hline(yintercept=5.5, linetype="solid", color = "black", size = 1) + 
   labs(x="Mortality Rate Ratios",y= "Pollutant",
        title="Mortality Rate Ratios by Pollutant - Modeled Individually",
-       subtitle="Expected additional Covid-19 death rate per added pollution unit with 95% confidence intervals"#,
-       #caption="Center for Environmental Medicine and Informatics, SUNY ESF - ProPublica"
+       subtitle="Expected additional Covid-19 death rate per added pollution unit with 95% confidence intervals"
        ) + theme(legend.position = c(0.8, 0.8)) + 
   scale_y_discrete(labels=c("PM25 (1ug/m^3)" = bquote(' '~PM[2.5]~ '(1 '*mu~g/m^3~ ')'),
                             "Ozone (1ppb)" = "Ozone (1ppb)",
@@ -61,12 +49,9 @@ ggplot(MRR.df.indv, aes(x=MRR, y=Pollutant, group=1)) +
                             "Diesel PM (.01 RQ)" = "Diesel PM (.01 RQ)"))
 
 
-# Maps ###########################################################################################################
-# grab the json files
+# Map NATA 
 url <- 'https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json'
 counties1 <- rjson::fromJSON(file=url)
-#now map our values to them
-# NATA RQs
 g <- list(
   scope = 'usa',
   projection = list(type = 'albers usa'),
@@ -97,7 +82,7 @@ fig <- fig %>% layout(
 
 fig
 
-#for PM 
+# Map PM2.5 
 
 g <- list(
   scope = 'usa',
@@ -129,7 +114,7 @@ fig2 <- fig2 %>% layout(
 
 fig2
 
-#for Ozone 
+# Map ozone 
 
 g <- list(
   scope = 'usa',
@@ -161,7 +146,7 @@ fig3 <- fig3 %>% layout(
 
 fig3
 
-#for Covid 19
+# Map COVID-19 deaths
 pol_county_covid_map <- pol_county_covid %>% mutate(cov_deaths_map = ifelse(cov_deaths == 0, .1, cov_deaths))
 g <- list(
   scope = 'usa',
@@ -194,12 +179,12 @@ fig4 <- fig4 %>% layout(
 fig4
 
 
-# counties with the highest death per capita and highest HAP RESP Q
+# Generate list of counties with the highest death per capita and highest HAP respiratory hazard quotient
 
 ranker <- pol_county_covid %>% mutate(deathpercap_rank = dense_rank(-deathpercap),
                                       HQrank = dense_rank(-nataRespHaz)) %>% filter(deathpercap_rank < 100,
                                                                                     HQrank < 100) %>%
-  select(State, County, GEOID, deathpercap, deathpercap_rank, nataRespHaz, HQrank)
+          select(State, County, GEOID, deathpercap, deathpercap_rank, nataRespHaz, HQrank)
 
 
 

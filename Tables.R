@@ -216,7 +216,7 @@ pol_county_covid_tab <- pol_county_covid_mod %>%
             "Average percent black 2012-2018" = Black_Per_mean_12to18*100,
             "Average percent hispanic 2012-2018" = Hispanic_Per_mean_12to18*100,
             "Average percent over 64 years old 2012-2018" = Over64_Per_mean_12to18*100,
-            "Average population density population/sq mile 2012-2018" = popdensity_persqmile,
+            "Percent population living outside urban areas 2010" = POPPCT_UA,
             "Average population smoking rate 2010-2018" = meanSmokeRate*100,
             "Total county hospital beds 2019" = countyHosipitalBeds,
             "County monthly average daily maximum temperature 2011 celsius" = max_temp_11,

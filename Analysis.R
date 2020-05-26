@@ -46,7 +46,7 @@ pol_county_covid_mod <- pol_county_covid %>%
          Black_Per_mean_12to18,
          Hispanic_Per_mean_12to18,
          Over64_Per_mean_12to18,
-         popdensity_persqmile,
+         POPPCT_UA,
          median_income_mean_12to18,
          meanSmokeRate,
          countyHosipitalBeds,
@@ -102,7 +102,7 @@ glmm.zinb.off = glmm.zinb(cov_deaths ~ nataRespHaz_10x +
                             scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                             scale(Over64_Per_mean_12to18) +  
                             scale(median_income_mean_12to18) +
-                            scale(popdensity_persqmile) +
+                            scale(POPPCT_UA) +
                             scale(meanSmokeRate) +
                             scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                             scale(obesity) + #health
@@ -130,7 +130,7 @@ glmm.zinb.off.d.t5 = glmm.zinb(cov_deaths ~ Allbut_top5_10x +
                                  scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                  scale(Over64_Per_mean_12to18) +  
                                  scale(median_income_mean_12to18) +
-                                 scale(popdensity_persqmile) +
+                                 scale(POPPCT_UA) +
                                  scale(meanSmokeRate) +
                                  scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                  scale(obesity) + #health
@@ -155,7 +155,7 @@ glmm.zinb.off.nata = glmm.zinb(cov_deaths ~ nataRespHaz_10x +
                             scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                             scale(Over64_Per_mean_12to18) +  
                             scale(median_income_mean_12to18) +
-                            scale(popdensity_persqmile) +
+                            scale(POPPCT_UA) +
                             scale(meanSmokeRate) +
                             scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                             scale(obesity) + #health
@@ -178,7 +178,7 @@ glmm.zinb.off.pm = glmm.zinb(cov_deaths ~
                                scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                scale(Over64_Per_mean_12to18) +  
                                scale(median_income_mean_12to18) +
-                               scale(popdensity_persqmile) +
+                               scale(POPPCT_UA) +
                                scale(meanSmokeRate) +
                                scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                scale(obesity) + #health
@@ -201,7 +201,7 @@ glmm.zinb.off.ozone = glmm.zinb(cov_deaths ~
             scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
             scale(Over64_Per_mean_12to18) +  
             scale(median_income_mean_12to18) +
-            scale(popdensity_persqmile) +
+            scale(POPPCT_UA) +
             scale(meanSmokeRate) +
             scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
             scale(obesity) + #health
@@ -223,7 +223,7 @@ glmm.zinb.off.FORMALDEHYDE = glmm.zinb(cov_deaths ~
                                  scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                  scale(Over64_Per_mean_12to18) +  
                                  scale(median_income_mean_12to18) +
-                                 scale(popdensity_persqmile) +
+                                 scale(POPPCT_UA) +
                                  scale(meanSmokeRate) +
                                  scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                  scale(obesity) + #health
@@ -243,7 +243,7 @@ glmm.zinb.off.ACETALDEHYDE = glmm.zinb(cov_deaths ~
                                  scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                  scale(Over64_Per_mean_12to18) +  
                                  scale(median_income_mean_12to18) +
-                                 scale(popdensity_persqmile) +
+                                 scale(POPPCT_UA) +
                                  scale(meanSmokeRate) +
                                  scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                  scale(obesity) + #health
@@ -265,7 +265,7 @@ glmm.zinb.off.ACROLEIN = glmm.zinb(cov_deaths ~
                                  scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                  scale(Over64_Per_mean_12to18) +  
                                  scale(median_income_mean_12to18) +
-                                 scale(popdensity_persqmile) +
+                                 scale(POPPCT_UA) +
                                  scale(meanSmokeRate) +
                                  scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                  scale(obesity) + #health
@@ -288,7 +288,7 @@ glmm.zinb.off.NAPHTHALENE = glmm.zinb(cov_deaths ~
                                  scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                  scale(Over64_Per_mean_12to18) +  
                                  scale(median_income_mean_12to18) +
-                                 scale(popdensity_persqmile) +
+                                 scale(POPPCT_UA) +
                                  scale(meanSmokeRate) +
                                  scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                  scale(obesity) + #health
@@ -311,7 +311,7 @@ glmm.zinb.off.diesel = glmm.zinb(cov_deaths ~
                                  scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                  scale(Over64_Per_mean_12to18) +  
                                  scale(median_income_mean_12to18) +
-                                 scale(popdensity_persqmile) +
+                                 scale(POPPCT_UA) +
                                  scale(meanSmokeRate) +
                                  scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                  scale(obesity) + #health
@@ -335,7 +335,7 @@ glmm.zinb.off.NAPHTHALENE.b = glmm.zinb(cov_deaths ~
                                           scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                           scale(Over64_Per_mean_12to18) +  
                                           scale(median_income_mean_12to18) +
-                                          scale(popdensity_persqmile) +
+                                          scale(POPPCT_UA) +
                                           scale(meanSmokeRate) +
                                           scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                           scale(obesity) + #health
@@ -358,7 +358,7 @@ glmm.zinb.off.diesel.b = glmm.zinb(cov_deaths ~
                                      scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                      scale(Over64_Per_mean_12to18) +  
                                      scale(median_income_mean_12to18) +
-                                     scale(popdensity_persqmile) +
+                                     scale(POPPCT_UA) +
                                      scale(meanSmokeRate) +
                                      scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                      scale(obesity) + #health
@@ -384,7 +384,7 @@ glmm.zinb.off.d.t5.10 = glmm.zinb(cov_deaths ~ Allbut_top5_10x +
                                  scale(Black_Per_mean_12to18) + scale(Hispanic_Per_mean_12to18) + #demogrphic
                                  scale(Over64_Per_mean_12to18) +  
                                  scale(median_income_mean_12to18) +
-                                 scale(popdensity_persqmile) +
+                                 scale(POPPCT_UA) +
                                  scale(meanSmokeRate) +
                                  scale(countyHosipitalBeds) + scale(min_temp_11) + scale(max_temp_11) +
                                  scale(obesity) + #health
@@ -409,7 +409,7 @@ glmm.zinb.off.d.t5.10.us = glmm.zinb(cov_deaths ~ Allbut_top5_10x +
                                     Black_Per_mean_12to18 + Hispanic_Per_mean_12to18 + #demogrphic
                                     Over64_Per_mean_12to18 +  
                                     log(median_income_mean_12to18) +
-                                    popdensity_persqmile +
+                                    POPPCT_UA +
                                     meanSmokeRate +
                                     countyHosipitalBeds + min_temp_11 + max_temp_11 +
                                     obesity + #health

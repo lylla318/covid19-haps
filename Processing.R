@@ -207,6 +207,14 @@ temps$GEOID <- ifelse(nchar(temps$County.Code) == 4, paste0("0", temps$County.Co
 temps <- temps %>% group_by(GEOID) %>% summarise(min_temp_11 = min(Avg.Daily.Min.Air.Temperature..C., na.rm = T),
                                                   max_temp_11 = max(Avg.Daily.Max.Air.Temperature..C., na.rm =T))
  
+# Import and pre-process 2010 census urban/rural data.
+download.file("https://www2.census.gov/geo/docs/reference/ua/PctUrbanRural_County.xls", 
+              destfile = "data/PctUrbanRural_County.xls")
+dens2010 <- read_excel("data/PctUrbanRural_County.xls")
+
+dens2010$GEOID <- paste0(dens2010$STATE, dens2010$COUNTY)
+dens2010 <- dens2010 %>% select(GEOID, POPPCT_UA)
+
 # Merge pre-processed data.
 dfmod <- acsAvs
 dfmod <- left_join(dfmod, county_trends)
@@ -218,12 +226,9 @@ dfmod <- left_join(dfmod, nata)
 dfmod <- left_join(dfmod, statetests)
 dfmod <- left_join(dfmod, ej_screen_county)
 dfmod <- left_join(dfmod, temps)
+dfmod <- left_join(dfmod, dens2010)
 
 # Additional pre-processing
-# Make a population desity measure.
-dfmod$ALAND <- as.numeric(dfmod$ALAND)
-dfmod$ALAND <- dfmod$ALAND*.00000038610215855
-dfmod$popdensity_persqmile <- dfmod$population_mean_12to18/dfmod$ALAND
 
 # Replace NAs with zeros for covid deaths.
 dfmod$cov_deaths <- ifelse(is.na(dfmod$cov_deaths), 0, dfmod$cov_deaths)

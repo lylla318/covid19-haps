@@ -1,31 +1,18 @@
 # Download and pre-process data for the analysis.
 
-library(tidyverse)
-library(lubridate)
+# Libraries
 library(dplyr)
-library(ggpubr)
 library(readxl)
-library(stringi)
 library(tidycensus)
 library(readr)
 library(tidyr)
 library(tigris)
 
 # Import COVID-19 death data.
-# Source: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv
-covid_deaths <- read_csv("data/covid_deaths_4_23_20.csv")
-
-# Import COVID-19 case data.
-# Source: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv
-covid_cases  <- read_csv("data/covid_cases_4_23_20.csv")
-
-# Join data.
-covid <- left_join(covid_deaths, covid_cases)
-covid <- covid %>% filter(!is.na(GEOID))
-covid$GEOID <- as.character(covid$GEOID)
-covid$GEOID <- ifelse(nchar(covid$GEOID) == 4, paste0("0", covid$GEOID), covid$GEOID)
-
-View(covid)
+# New York Times Source: https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv
+# NYC Health Department Source: https://raw.githubusercontent.com/nychealth/coronavirus-data/master/by-boro.csv
+# Data set uploaded to GIT and locked in for 2020-07-11
+covid <- read_csv("data/covid_cases_deaths_7_11_20.csv")
 
 # Function to grab and pre-process census data for given year.
 census_api_key("3b7f443116b03bdd7ce2f1ff3f2b117cfff19e69") 
@@ -169,13 +156,13 @@ nata  <- nata [which(nata$Tract == nata$FIPS_TRACT ),]
 nata$Population <- as.numeric(as.character( gsub(",", "", nata$Population) ))
 nata$GEOID <- nata$FIPS
 
-# Import and pre-process COVID-19 testing data.
-# Source: https://covidtracking.com/api/v1/states/current.csv
-testing <- read.csv('data/covid_testing_4_19_20.csv')
-statetests <- testing %>% select(State, totaltests)
-
 # Import and pre-process COVID-19 EJ screen data.
 # Source: https://www.epa.gov/ej_screen/download-ej_screen-data
+# file is too large to be included in the github data folder, uncomments the following 4 lines to download to file locally
+# download.file("ftp://newftp.epa.gov/EJSCREEN/2019/EJSCREEN_2019_USPR.csv.zip",
+#                destfile = "data/EJSCREEN_2019_USPR.csv.zip")
+#  
+# unzip("data/EJSCREEN_2019_USPR.csv.zip", exdir="./data")
 ej_screen <- read_csv("data/EJSCREEN_2019_USPR.csv")
 ej_screen <- ej_screen %>% select(ACSTOTPOP,
                              ACSTOTHH,
@@ -194,11 +181,14 @@ ej_screen_county <- ej_screen %>% group_by(GEOID) %>%
              ACSTOTHH_tot_2016_county= sum(ACSTOTHH, na.rm = T),
              OZONE_mean_2016 = mean(OZONE, na.rm =T),
              PRE1960PCT_mean_13_17 = mean(PRE1960PCT, na.rm =T)) %>% ungroup()
-ej_screen_county <- ej_screen_county %>% mutate(minority_per_2016_county = minority_tot_2016_county/ACSTOTPOP_tot_2016_county,
-                                       LINGISO_per_2016_county = LINGISO_tot_2016_county/ACSTOTHH_tot_2016_county,
-                                       LOWINCOME_per_2016_county = LOWINCOME_tot_2016_county/ACSTOTPOP_tot_2016_county)
+ej_screen_county <- ej_screen_county %>% 
+  mutate(minority_per_2016_county = minority_tot_2016_county/ACSTOTPOP_tot_2016_county,
+         LINGISO_per_2016_county = LINGISO_tot_2016_county/ACSTOTHH_tot_2016_county,
+         LOWINCOME_per_2016_county = LOWINCOME_tot_2016_county/ACSTOTPOP_tot_2016_county)
  
-ej_screen_county <- ej_screen_county %>% select(GEOID, minority_per_2016_county, LINGISO_per_2016_county, LOWINCOME_per_2016_county, OZONE_mean_2016, PRE1960PCT_mean_13_17)
+ej_screen_county <- ej_screen_county %>% 
+  select(GEOID, minority_per_2016_county, LINGISO_per_2016_county,
+         LOWINCOME_per_2016_county, OZONE_mean_2016, PRE1960PCT_mean_13_17)
 
 # Import and pre-process temperature data.
 # Source: https://wonder.cdc.gov/nasa-nldas.html
@@ -215,15 +205,26 @@ dens2010 <- read_excel("data/PctUrbanRural_County.xls")
 dens2010$GEOID <- paste0(dens2010$STATE, dens2010$COUNTY)
 dens2010 <- dens2010 %>% select(GEOID, POPPCT_UA)
 
+# date of first infection
+# count days since first case - sfc
+nyt_deaths_ts <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
+nyt_deaths_ts_sfc <- nyt_deaths_ts %>% group_by(fips, county, state) %>% filter(cases > 0) %>% summarise(days_since_first_case = n())
+NYC <- nyt_deaths_ts_sfc %>% filter(county == "New York City")
+nyt_deaths_ts_sfc_2 <- nyt_deaths_ts %>% group_by(fips) %>% filter(cases > 0) %>% summarise(days_since_first_case = n()) %>% ungroup()
+nyt_deaths_ts_sfc_2$GEOID <- nyt_deaths_ts_sfc_2$fips
+nyt_deaths_ts_sfc_2$fips <- NULL
+covid_days <- left_join(covid, nyt_deaths_ts_sfc_2)
+covid_days <- covid_days %>% mutate(days_since_first_case = ifelse(is.na(days_since_first_case), NYC$days_since_first_case,
+                                                                   days_since_first_case))
+
 # Merge pre-processed data.
 dfmod <- acsAvs
 dfmod <- left_join(dfmod, county_trends)
-dfmod <- left_join(dfmod, covid)
+dfmod <- left_join(dfmod, covid_days)
 dfmod <- left_join(dfmod, county_shapes)
 dfmod <- left_join(dfmod, smoking_data)
 dfmod <- left_join(dfmod, hospitals)
 dfmod <- left_join(dfmod, nata)
-dfmod <- left_join(dfmod, statetests)
 dfmod <- left_join(dfmod, ej_screen_county)
 dfmod <- left_join(dfmod, temps)
 dfmod <- left_join(dfmod, dens2010)
@@ -239,7 +240,20 @@ dfmod$countyHosipitalBeds <- ifelse(is.na(dfmod$countyHosipitalBeds), 0, dfmod$c
 # Final dataset. 
 pol_county_covid <- dfmod %>% ungroup()
 
+# Create Variable for all other haps
+names(pol_county_covid) #these positions may need to be checked
+pol_county_covid <- pol_county_covid %>% mutate(Allbut_top5 = rowSums(select(.,80:84, 87:95, 97:100, 102:110,112:122)))
 
+# change names to make them easier to see on mod output
+pol_county_covid$deathpercap <- pol_county_covid$cov_deaths/pol_county_covid$Population
+pol_county_covid$nataRespHaz <- pol_county_covid$`Total Respiratory (hazard quotient)`
+pol_county_covid$nataRespHaz_10x <- pol_county_covid$`Total Respiratory (hazard quotient)`*10
+pol_county_covid$nataPT <- pol_county_covid$`PT-StationaryPoint Respiratory (hazard quotient)`  
+pol_county_covid$diesel <- pol_county_covid$`DIESEL PM` 
+pol_county_covid$active <-pol_county_covid$`measurename_mean_all_years_Physical inactivity`
+pol_county_covid$prevent_hos <- pol_county_covid$`measurename_mean_all_years_Preventable hospital stays`
+pol_county_covid$pm25_chr <- pol_county_covid$`measurename_mean_all_years_Air pollution - particulate matter`
+pol_county_covid$obesity <- pol_county_covid$`measurename_mean_all_years_Adult obesity`
 
 
 

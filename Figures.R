@@ -1,6 +1,7 @@
 # Generate figures for the manuscript.
 library(plotly)
 library(rjson)
+library(ggplot2)
 
 # Figure 1: Maps
 
@@ -132,132 +133,9 @@ fig4 <- fig4 %>% layout(
 
 fig4
 
-
 # Figure 2: Graph of MRR and 95% confidence interval.
-
-# Make the data frame.
-summary(glmm.zinb.off.d.t5)
-Pollutant <- c("All Other HAPS (.1 RQ)",
-               "PM25 (1ug/m^3)",
-               "Ozone (1ppb)",
-               "Formaldehyde (.1 RQ)",                                          
-               "Acetaldehyde (.1 RQ)",                                          
-               "Acrolein (.1 RQ)",                                               
-               "Naphthalene (.01 RQ)",
-               "Diesel PM (.01 RQ)")
-
-MRR1 <- exp(fixed(glmm.zinb.off.d.t5)$dist[2,1])
-MRR2 <- exp(fixed(glmm.zinb.off.d.t5)$dist[3,1])
-MRR3 <- exp(fixed(glmm.zinb.off.d.t5)$dist[4,1])
-MRR4 <- exp(fixed(glmm.zinb.off.d.t5)$dist[5,1])
-MRR5 <- exp(fixed(glmm.zinb.off.d.t5)$dist[6,1])
-MRR6 <- exp(fixed(glmm.zinb.off.d.t5)$dist[7,1])
-MRR7 <- exp(fixed(glmm.zinb.off.d.t5)$dist[8,1])
-MRR9 <- exp(fixed(glmm.zinb.off.d.t5)$dist[10,1])
-MRR <- c(MRR1,
-         MRR2,
-         MRR3,
-         MRR4,
-         MRR5,
-         MRR6,
-         MRR7,
-         MRR9)
-CIlow1 <- exp(fixed(glmm.zinb.off.d.t5)$dist[2,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[2,2])
-CIlow2 <- exp(fixed(glmm.zinb.off.d.t5)$dist[3,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[3,2])
-CIlow3 <- exp(fixed(glmm.zinb.off.d.t5)$dist[4,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[4,2])
-CIlow4 <- exp(fixed(glmm.zinb.off.d.t5)$dist[5,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[5,2])
-CIlow5 <- exp(fixed(glmm.zinb.off.d.t5)$dist[6,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[6,2])
-CIlow6 <- exp(fixed(glmm.zinb.off.d.t5)$dist[7,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[7,2])
-CIlow7 <- exp(fixed(glmm.zinb.off.d.t5)$dist[8,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[8,2])
-CIlow9 <- exp(fixed(glmm.zinb.off.d.t5)$dist[10,1] - 1.96*fixed(glmm.zinb.off.d.t5)$dist[10,2])
-CIlow <- c(CIlow1,
-           CIlow2,
-           CIlow3,
-           CIlow4,
-           CIlow5,
-           CIlow6,
-           CIlow7,
-           CIlow9)
-CIH1 <- exp(fixed(glmm.zinb.off.d.t5)$dist[2,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[2,2])
-CIH2 <- exp(fixed(glmm.zinb.off.d.t5)$dist[3,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[3,2])
-CIH3 <- exp(fixed(glmm.zinb.off.d.t5)$dist[4,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[4,2])
-CIH4 <- exp(fixed(glmm.zinb.off.d.t5)$dist[5,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[5,2])
-CIH5 <- exp(fixed(glmm.zinb.off.d.t5)$dist[6,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[6,2])
-CIH6 <- exp(fixed(glmm.zinb.off.d.t5)$dist[7,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[7,2])
-CIH7 <- exp(fixed(glmm.zinb.off.d.t5)$dist[8,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[8,2])
-CIH9 <- exp(fixed(glmm.zinb.off.d.t5)$dist[10,1] + 1.96*fixed(glmm.zinb.off.d.t5)$dist[10,2])
-CIH <- c(CIH1,
-         CIH2,
-         CIH3,
-         CIH4,
-         CIH5,
-         CIH6,
-         CIH7,
-         CIH9)
-MRR.df.d.t5 <- data.frame(Pollutant, MRR, CIlow, CIH)
-
-Pollutant <- c("PM25 (1ug/m^3)",
-               "Ozone (1ppb)",
-               "All Resp. HAPs (.1 RQ)",
-               "Formaldehyde (.1 RQ)",                                          
-               "Acetaldehyde (.1 RQ)",                                          
-               "Acrolein (.1 RQ)",                                               
-               "Naphthalene (.01 RQ)",
-               "Diesel PM (.01 RQ)")
-
-MRR3 <- exp(fixed(glmm.zinb.off.nata)$dist[2,1])
-MRR1 <- exp(fixed(glmm.zinb.off.pm)$dist[2,1])
-MRR2 <- exp(fixed(glmm.zinb.off.ozone)$dist[2,1])
-MRR4 <- exp(fixed(glmm.zinb.off.FORMALDEHYDE)$dist[2,1])
-MRR5 <- exp(fixed(glmm.zinb.off.ACETALDEHYDE)$dist[2,1])
-MRR6 <- exp(fixed(glmm.zinb.off.ACROLEIN)$dist[2,1])
-MRR7 <- exp(fixed(glmm.zinb.off.NAPHTHALENE)$dist[2,1])
-MRR9 <- exp(fixed(glmm.zinb.off.diesel)$dist[2,1])
-
-MRR <- c(MRR1,
-         MRR2,
-         MRR3,
-         MRR4,
-         MRR5,
-         MRR6,
-         MRR7,
-         MRR9)
-
-CIlow3 <- exp(fixed(glmm.zinb.off.nata)$dist[2,1] - 1.96*fixed(glmm.zinb.off.nata)$dist[2,2])
-CIlow1 <- exp(fixed(glmm.zinb.off.pm)$dist[2,1] - 1.96*fixed(glmm.zinb.off.pm)$dist[2,2])
-CIlow2 <- exp(fixed(glmm.zinb.off.ozone)$dist[2,1] - 1.96*fixed(glmm.zinb.off.ozone)$dist[2,2])
-CIlow4 <- exp(fixed(glmm.zinb.off.FORMALDEHYDE)$dist[2,1] - 1.96*fixed(glmm.zinb.off.FORMALDEHYDE)$dist[2,2])
-CIlow5 <- exp(fixed(glmm.zinb.off.ACETALDEHYDE)$dist[2,1] - 1.96*fixed(glmm.zinb.off.ACETALDEHYDE)$dist[2,2])
-CIlow6 <- exp(fixed(glmm.zinb.off.ACROLEIN)$dist[2,1] - 1.96*fixed(glmm.zinb.off.ACROLEIN)$dist[2,2])
-CIlow7 <- exp(fixed(glmm.zinb.off.NAPHTHALENE)$dist[2,1] - 1.96*fixed(glmm.zinb.off.NAPHTHALENE)$dist[2,2])
-CIlow9 <- exp(fixed(glmm.zinb.off.diesel)$dist[2,1] - 1.96*fixed(glmm.zinb.off.diesel)$dist[2,2])
-CIlow <- c(CIlow1,
-           CIlow2,
-           CIlow3,
-           CIlow4,
-           CIlow5,
-           CIlow6,
-           CIlow7,
-           CIlow9)
-CIH3 <- exp(fixed(glmm.zinb.off.nata)$dist[2,1] + 1.96*fixed(glmm.zinb.off.nata)$dist[2,2])
-CIH1 <- exp(fixed(glmm.zinb.off.pm)$dist[2,1] + 1.96*fixed(glmm.zinb.off.pm)$dist[2,2])
-CIH2 <- exp(fixed(glmm.zinb.off.ozone)$dist[2,1] + 1.96*fixed(glmm.zinb.off.ozone)$dist[2,2])
-CIH4 <- exp(fixed(glmm.zinb.off.FORMALDEHYDE)$dist[2,1] + 1.96*fixed(glmm.zinb.off.FORMALDEHYDE)$dist[2,2])
-CIH5 <- exp(fixed(glmm.zinb.off.ACETALDEHYDE)$dist[2,1] + 1.96*fixed(glmm.zinb.off.ACETALDEHYDE)$dist[2,2])
-CIH6 <- exp(fixed(glmm.zinb.off.ACROLEIN)$dist[2,1] + 1.96*fixed(glmm.zinb.off.ACROLEIN)$dist[2,2])
-CIH7 <- exp(fixed(glmm.zinb.off.NAPHTHALENE)$dist[2,1] + 1.96*fixed(glmm.zinb.off.NAPHTHALENE)$dist[2,2])
-CIH9 <- exp(fixed(glmm.zinb.off.diesel)$dist[2,1] + 1.96*fixed(glmm.zinb.off.diesel)$dist[2,2])
-CIH <- c(CIH1,
-         CIH2,
-         CIH3,
-         CIH4,
-         CIH5,
-         CIH6,
-         CIH7,
-         CIH9)
-MRR.df.indv <- data.frame(Pollutant, MRR, CIlow, CIH)
-
 # Graph Figure 2
+
 MRR.df.indv$Pollutant <- factor(MRR.df.indv$Pollutant, as.character(MRR.df.indv$Pollutant))
 MRR.df.indv$order <- c(1,2,3,4,5,6,7,8)
 MRR.df.indv$Pollutant <- reorder(MRR.df.indv$Pollutant, -MRR.df.indv$order)
